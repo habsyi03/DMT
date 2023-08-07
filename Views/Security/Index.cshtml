@@ -1,0 +1,134 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Security.cshtml";
+}
+
+
+<style type="text/css">
+    .errorValidation {
+        color: #dc3545 !important;
+        margin-bottom:5%;
+    }
+
+    .invalid {
+        border-color: #dc3545 !important;
+    }
+
+    .valid {
+        border-color: green !important;
+    }
+</style>
+
+
+<div class="container" ng-controller="securityController">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Sign In</h5>
+                    <form class="form-signin" name="securityForm" ng-submit="authenticate(securityForm.$valid)" novalidate>
+                        <div class="form-label-group">
+                            <input type="text"
+                                   id="inputEmail"
+                                   class="form-control"
+                                   name="txtUserID"
+                                   placeholder="User ID"
+                                   ng-model="UserID"
+                                   ng-class="{'invalid':securityForm.txtUserID.$dirty || securityForm.$submitted, 'valid':securityForm.txtUserID.$valid && initShowPassword==false}"
+                                   autofocus 
+                                   ng-disabled="!initSelectProject"
+                                   required>
+                            <label for="inputEmail">User ID</label>
+                        </div>
+
+                        <div ng-show="securityForm.$submitted || (securityForm.txtUserID.$error && securityForm.txtUserID.$dirty)" ng-messages="securityForm.txtUserID.$error">
+                            <div ng-message="required"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> [USER ID] Is Required.</label></div>
+                            @*<div ng-message="minlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> [Defect Title] Is To Sort.</label></div>
+                <div ng-message="maxlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> [Defect Title] Is To Max.</label></div>*@
+                        </div>
+
+                        <div class="form-label-group">
+                            <input type="password"
+                                   id="inputPassword"
+                                   class="form-control"
+                                   name="txtPassword"
+                                   placeholder="Password"
+                                   ng-model="Password"
+                                   ng-class="{'invalid':securityForm.txtPassword.$dirty || securityForm.$submitted , 'valid':securityForm.txtPassword.$valid && initShowPassword==false}"                                  
+                                   ng-disabled="!initSelectProject"
+                                   required>
+                            <label for="inputPassword">Password</label>
+                        </div>
+                        <div ng-show="securityForm.$submitted || (securityForm.txtPassword.$error && securityForm.txtPassword.$dirty)" ng-messages="securityForm.txtPassword.$error">
+                            <div ng-message="required"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> [Password] Is Required.</label></div>
+                            @*<div ng-message="minlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> [Defect Title] Is To Sort.</label></div>
+                            <div ng-message="maxlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> [Defect Title] Is To Max.</label></div>*@
+                        </div>
+
+                        <div ng-show="initShowPassword">
+                            <label class="errorValidation"><span class="fa fa-times errorValidation"></span> User ID and Password is not Match.</label>
+                        </div>
+
+                        <button class="btn btn-lg btn-success btn-block text-uppercase" type="submit" id="btnLogin" ng-disabled="!initSelectProject">Authenticate</button>                      
+                    </form>
+                    <form class="form-signin" name="formProject" ng-submit="login()" novalidate>
+                        <div class="form-group" style="padding-top:10%;">
+                            <h5 class="card-title text-center" style="margin-bottom:1rem;">Select Project</h5>
+                            <div class="form-label-group">
+                                <select class="form-control" 
+                                        ng-model="projectSelected" 
+                                        ng-options="pjt.ProjectID as pjt.ProjectName for pjt in DataProject"
+                                        name="slcProject"
+                                        ng-class="{'invalid':formProject.slcProject.$dirty || formProject.$submitted, 'valid':formProject.slcProject.$valid}"
+                                        ng-disabled="initSelectProject"
+                                        required></select>
+                            </div>
+                            <div ng-show="formProject.$submitted || (formProject.slcProject.$error && formProject.slcProject.$dirty)" ng-messages="formProject.slcProject.$error">
+                                <div ng-message="required"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Please select the project first.</label></div>
+                            </div>
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" id="btnLogin1" ng-disabled="initSelectProject">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Select Project</h5>
+                        <form class="form-signin">
+                            <div class="form-label-group">
+                                <select class="form-control" ng-model="projectSelected" ng-options="pjt.ProjectID as pjt.ProjectName for pjt in DataProject"
+                                        ng-disabled="initSelectProject"></select>
+                            </div>
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="button" ng-click="login()" id="btnLogin1" ng-disabled="initSelectProject">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        //console.log(sessionStorage);
+        //sessionStorage.clear();
+        $.ajax({
+                type: "POST",
+                url: "@Url.Action("destroySession", "Security")",
+                contentType: false,
+                processData: false,
+        });
+    });
+
+    //function setBorderInvalid() {
+    //    document.getElementById('inputPassword').style.borderColor = 'red!important';
+    //}
+</script>
+

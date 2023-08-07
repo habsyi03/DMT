@@ -1,0 +1,311 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+
+    if (Session["UserID"] == null)
+    {
+        Response.Redirect("~/Security/Index");
+    }
+}
+
+<style type="text/css">
+    .errorValidation {
+        color: #dc3545 !important;
+    }
+
+    .invalid {
+        border-color: #dc3545 !important;
+    }
+
+    .valid {
+        border-color: green !important;
+    }
+</style>
+
+<div ng-controller="adminController" class="container-fluid">
+    <div class="form-group">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6" ng-init="initOptMaster()">
+                        <select class="form-control" ng-model="masterTable" ng-change="changeDDMasterTable()">
+                            <option ng-selected="masterTable == optDefectStatusSelected" ng-value="optDefectStatusSelected" selected>Defect Status</option>
+                            <option ng-selected="masterTable == optLogTypeSelected" ng-value="optLogTypeSelected">Log Type</option>
+                            <option ng-selected="masterTable == optPhaseSelected" ng-value="optPhaseSelected">Phase</option>
+                            <option ng-selected="masterTable == optPrioritySelected" ng-value="optPriority">Priority</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-12">
+
+                @*Defect Status Table*@
+                <div ng-show="showTblDefectStatus">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="form-group">
+                                <button class="btn btn-success" data-toggle="modal" data-target="#mdlAddMasterDefectStatus" title="Create New Defect"><span class="fa fa-plus"></span> Add New Defect Status</button>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <h4>Master Defect Status</h4>
+                            <table class="table table-responsive table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Def Status ID</th>
+                                        <th>Def Status Name</th>
+                                        <th>Is Active</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="ds in getMasterDefectStatusData">
+                                        <td>{{ds.DefStatusID}}</td>
+                                        <td>{{ds.DefStatusName}}</td>
+                                        <td>{{ds.IsActive}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @*Log Type Table*@
+                <div ng-show="showTblLogType">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="form-group">
+                                <button class="btn btn-success" data-toggle="modal" data-target="#mdlAddMasterLogType" title="Create New Log Type">
+                                    <span class="fa fa-plus"></span> Add New Log Type
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <h4>Master Type of Log</h4>
+                            <table class="table table-responsive table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>LogTypeID</th>
+                                        <th>LogTypeName</th>
+                                        <th>IsActive</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="lt in getMasterLogTypeData">
+                                        <td>{{lt.LogTypeID}}</td>
+                                        <td>{{lt.LogTypeName}}</td>
+                                        <td>{{lt.IsActive}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @*Phase Table*@
+                <div ng-show="showTblPhase">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="form-group">
+                                <button class="btn btn-success" data-toggle="modal" data-target="#mdlAddMasterPhase" title="Create New Phase">
+                                    <span class="fa fa-plus"></span> Add New Phase
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <h4>Master Phase</h4>
+                            <table class="table table-responsive table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>PhaseID</th>
+                                        <th>PhaseName</th>
+                                        <th>IsActive</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="ph in getMasterPhaseData">
+                                        <td>{{ph.PhaseID}}</td>
+                                        <td>{{ph.PhaseName}}</td>
+                                        <td>{{ph.IsActive}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @*Priority Table*@
+                <div ng-show="showTblPriority">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="form-group">
+                                <button class="btn btn-success" data-toggle="modal" data-target="#mdlAddMasterPriority" title="Create New Priority">
+                                    <span class="fa fa-plus"></span> Add New Priority
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <h4>Master Priority</h4>
+                            <table class="table table-responsive table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>PriorityID</th>
+                                        <th>PriorityName</th>
+                                        <th>IsActive</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="pr in getMasterPriorityData">
+                                        <td>{{pr.PriorityID}}</td>
+                                        <td>{{pr.PriorityName}}</td>
+                                        <td>{{pr.IsActive}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*Modal for add Defect Status*@
+    <div id="mdlAddMasterDefectStatus" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Defect Status</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <form name="formDefectStatus" ng-submit="setDefectStatus(formDefectStatus.$valid)" novalidate>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text"
+                                           class="form-control"
+                                           ng-model="newDefectStatus"
+                                           name="txtDefectStatusName"
+                                           ng-class="{'invalid':formDefectStatus.txtDefectStatusName.$dirty || formDefectStatus.$submitted, 'valid':formDefectStatus.txtDefectStatusName.$valid}"
+                                           placeholder="Add Defect Status Name"
+                                           ng-maxlength="50"
+                                           autofocus
+                                           required />
+                                    <div ng-show="formDefectStatus.$submitted || (formDefectStatus.txtDefectStatusName.$error && formDefectStatus.txtDefectStatusName.$dirty)" ng-messages="formDefectStatus.txtDefectStatusName.$error">
+                                        <div ng-message="required"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Defect Status Name Is Required.</label></div>
+                                        <div ng-message="maxlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Defect Status Name Is To Long.</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" id="btnSaveDefectStatus"><span class="fa fa-save"></span> Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @*Modal for add Log Type*@
+    <div id="mdlAddMasterLogType" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Log Type</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <form name="formLogType" ng-submit="setLogType(formLogType.$valid)" novalidate>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text"
+                                           class="form-control"
+                                           name="txtLogTypeName"
+                                           ng-model="newLogType"
+                                           ng-class="{'invalid':formLogType.txtLogTypeName.$dirty || formLogType.$submitted, 'valid':formLogType.txtLogTypeName.$valid}"
+                                           placeholder="Add New Log Type Name"
+                                           autofocus
+                                           required />
+                                    <div ng-show="formLogType.$submitted || (formLogType.txtLogTypeName.$error && formLogType.txtLogTypeName.$dirty)" ng-messages="formLogType.txtLogTypeName.$error">
+                                        <div ng-message="required"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Log Type Name Is Required.</label></div>
+                                        <div ng-message="maxlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Log Type Name Is To Long.</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @*Modal for add Phase*@
+    <div id="mdlAddMasterPhase" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Phase</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <form name="formPhase" ng-submit="setPhase(formPhase.$valid)" novalidate>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text"
+                                           class="form-control"
+                                           name="txtPhase"
+                                           ng-model="newPhase"
+                                           ng-class="{'invalid':formPhase.txtLogTypeName.$dirty || formPhase.$submitted, 'valid':formPhase.txtLogTypeName.$valid}"
+                                           placeholder="Add New Phase Name"
+                                           autofocus
+                                           required />
+                                    <div ng-show="formPhase.$submitted || (formPhase.txtPhase.$error && formPhase.txtPhase.$dirty)" ng-messages="formPhase.txtPhase.$error">
+                                        <div ng-message="required"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Phase Name Is Required.</label></div>
+                                        <div ng-message="maxlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Phase Name Is To Long.</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,135 @@
+﻿<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 1100px!important;">
+        <div class="modal-content">
+            <form name="userForm" ng-submit="submitForm(userForm.$valid)" ng-init="initNewDefect()" enctype="multipart/form-data" novalidate>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-2 control-label">Defect Title:</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="defectTitle" />
+                                </div>
+
+                                <label class="col-md-2">Detected on Date:</label>
+                                <div class="col-md-4">
+                                    <input type="date" class="form-control" ng-model="DetectedDate" />
+                                    {{DetectedDate}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-2 control-label">Priority:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" ng-model="PriorityID" ng-options="priority.PriorityID as priority.PriorityName for priority in priorityData"></select>
+                                </div>
+
+                                <label class="col-md-2">Status:</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="DefectStatus" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-2">Phase:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" ng-model="DefectPhase" ng-options="phase.PhaseID as phase.PhaseName for phase in PhaseData"> </select>
+                                </div>
+
+                                <label class="col-md-2 control-label">Assigned To:</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" ng-model="AssignedToDefect" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-2">Type of Log:</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" ng-model="LogTypeID" ng-options="logType.LogTypeID as logType.LogTypeName for logType in logTypeData"></select>
+                                </div>
+
+                                <label class="col-md-2 control-label">Detected in Version:</label>
+                                <div class="col-md-4">
+                                    <input type="text"
+                                           class="form-control"
+                                           ng-model="DetectInVersion" name="txtDetectInVersion"
+                                           ng-minlength="3"
+                                           ng-class="{'invalid':userForm.txtDetectInVersion.$dirty || userForm.$submitted, 'valid':userForm.txtDetectInVersion.$valid}"
+                                           required />
+
+                                    <div ng-show="userForm.$submitted || (userForm.txtDetectInVersion.$error && userForm.txtDetectInVersion.$dirty)" ng-messages="userForm.txtDetectInVersion.$error">
+                                        <div ng-message="required"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Is Required.</label></div>
+                                        <div ng-message="minlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Is To Sort.</label></div>
+                                        <div ng-message="maxlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Is To Max.</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-2">Description:</label>
+                                <div class="col-md-4">
+                                    <textarea class="form-control"
+                                              name="txtDescription"
+                                              ng-model="DefectDesc"
+                                              rows="5"
+                                              ng-minlength="3"
+                                              ng-maxlength="100"
+                                              ng-class="{'invalid':userForm.txtDescription.$dirty || userForm.$submitted, 'valid':userForm.txtDescription.$valid}"
+                                              required>
+                                    </textarea>
+                                    <div ng-show="userForm.$submitted || (userForm.txtDescription.$error && userForm.txtDescription.$dirty)" ng-messages="userForm.txtDescription.$error">
+                                        <div ng-message="required"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Is Required.</label></div>
+                                        <div ng-message="minlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Is To Sort.</label></div>
+                                        <div ng-message="maxlength"><label class="errorValidation"><span class="fa fa-times errorValidation"></span> Is To Max.</label></div>
+                                    </div>
+                                </div>
+
+                                @*<div class="col-md-6">
+                                    <div id="mulitplefileuploader" ng-model="fileUpload">Upload</div>
+                                    <div id="status"></div>
+                                    <div id="startbutton" class="ajax-file-upload-green">Start Upload</div>
+                                </div>*@
+
+                                <label class="col-md-2">Attachment:</label>
+                                <div class="controls col-md-4">
+                                    <div class="entry input-group">
+                                        <input id="fields" class="btn btn-primary form-control" name="fields[]" type="file" multiple />
+                                        @*<div class="input-group-append">
+                                            <button class="btn btn-success btn-add" type="button"><span class="fa fa-plus"></span></button>
+                                        </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"></div>
+                                <button type="button" class="btn btn-success" onclick="upload()">Upload</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" ng-click="setDefect()"><span class="fa fa-save"></span> Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

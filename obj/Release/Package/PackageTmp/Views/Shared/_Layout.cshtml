@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html ng-app="myModule" id="primary">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @*<script src="~/Content/Jquery/Jquery 3.1.1.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+
+    @*CSS Tambahan*@
+    <link href="~/Content/css/table.css" rel="stylesheet" type="text/css" />
+
+    @*AngularJS*@
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/Angular/module.js"></script>
+    <script src="~/Scripts/Angular/services.js"></script>
+    <script src="~/Scripts/Angular/angular-messages.min.js"></script>
+
+    @*Angular DatePicker*@
+    @*<link href="~/Content/date-picker/docs.css" rel="stylesheet" />
+        <link href="~/Content/date-picker/angular-material.css" rel="stylesheet" />*@
+    <script src="~/Scripts/angular-aria.min.js"></script>
+    <script src="~/Scripts/angular-animate.min.js"></script>
+    <script src="~/Scripts/angular-route.min.js"></script>
+    <script src="~/Content/angular-date-picker/moment.js"></script>
+    <script src="~/Content/angular-date-picker/svg-assets-cache.js"></script>
+    <script src="~/Content/angular-date-picker/angular-material.js"></script>
+
+    @*Angular Datatable*@
+    <script src="~/Content/Angular-Data-Table/angular-datatables.js"></script>
+    <script src="~/Content/Angular-Data-Table/angular-datatables.min.js"></script>
+
+    @*Bootstrap 4*@
+    <link href="~/Content/bootstrap4/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    @*Bootstrap 3*@
+    @*<link href="~/Content/bootstrap3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />*@
+
+    @*Font Awesome*@
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    @*navbar*@
+    <link href="~/Content/css/navbar.css" rel="stylesheet" />
+
+    @*Validation*@
+    <link href="~/Content/validation/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/validation/css/bootstrapValidator.min.css" rel="stylesheet" type="text/css">
+
+    @*DataTable*@
+    <link href="~/Content/data-table/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+    @*Upload File*@
+    <link href="~/Content/upload-file/css/uploadfile.css" rel="stylesheet" />
+
+</head>
+<body style="padding-top:0px;">
+    @if (Session["Role"].ToString() != "ADM")
+    {
+        <div class="form-group">
+            <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="#">Defect Management Tools</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">
+                                <i class="fa fa-home"></i>
+                                Home
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fa fa-area-chart">
+                                    @*<span class="badge badge-danger">11</span>*@
+                                </i>
+                                Defect Graphic
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fa fa-book">
+                                    @*<span class="badge badge-danger">11</span>*@
+                                </i>
+                                Reporting
+                            </a>
+                        </li>
+                    </ul>
+                    @{
+                        try
+                        {
+                            <h6 style="color:white;">Welcome, @Session["FullName"].ToString()</h6>
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                    <a class="nav-link" href="@Url.Action("Logout", "Security")">Logout</a>
+                </div>
+            </nav>
+        </div>
+     }
+
+    <div class="container-fluid body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - DEFECT MANAGEMENT TOOLS (AGIT DEVELOPER)</p>
+        </footer>
+    </div>
+
+
+
+    @*Bootstrap 4*@
+    <script type="text/javascript" src="~/Content/bootstrap4/js/bootstrap.min.js"></script>
+
+    @*Bootstrap 3*@
+    @*<script type="text/javascript" src="~/Content/bootstrap3/js/bootstrap.min.js"></script>*@
+
+
+    @*DataTable JS*@
+    <!-- Panggil JS nya jQuery Datatables -->
+    <script type="text/javascript" src="~/Content/data-table/js/jquery.dataTables.min.js"></script>
+
+    @*Validation*@
+    <script type="text/javascript" src="~/Content/validation/js/bootstrapvalidator.min.js"></script>
+    <script src="~/Content/validation/js/modernizr.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/validation.js" type="text/javascript"></script>
+
+    @*Upload File*@
+    @*<script src="~/Content/upload-file/js/jquery.uploadfile.min.js"></script>*@
+
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>
